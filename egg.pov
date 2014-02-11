@@ -1,18 +1,32 @@
 #include "colors.inc" background { color Gray75 }
 
-#declare radio = 1;
-#if(radio = 1)
-  #include "radiosity_1.pov" // sviti vsude
-#end
-#if(radio = 2)
-  #include "radiosity_2.pov"
-#end
+#declare USE_RADIOSITY  = on;
+#declare USE_PHOTONS    = on;
+#declare USE_AREA_LIGHT = on;
+#declare USE_FILL_LIGHT = on;
+
+#declare USE_GLASS  = on;
+#declare USE_WINDOW = on;
+#declare USE_PLANT  = off;
+
+#include "rad_def.inc"
+
+global_settings 
+{
+  assumed_gamma 2.5
+  max_trace_level 20
+  #if (USE_PHOTONS)
+    photons {count 20000 jitter off}
+  #end
+  #if (USE_RADIOSITY)
+  radiosity {Rad_Settings(Radiosity_Fast, off, off) normal off brightness 0.75}
+  #end
+}
 
 camera { 
   location <0,2,-3>
   look_at <0,1.25,0>
-  right x*1920/1200 
- }
+}
 
 light_source { <2, 4, -3>
   color Gray75
